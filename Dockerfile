@@ -1,5 +1,7 @@
 FROM php:7.0.13-fpm-alpine
 
+ENV TAG 1.10
+
 MAINTAINER Sean Cross <xobs@kosagi.com>
 
 RUN apk update && \
@@ -11,7 +13,7 @@ RUN apk update && \
     apk add glibc-2.23-r3.apk && \
     rm -f glibc-2.23-r3.apk && \
     mkdir -p /opt/codebender/ && \
-    curl -SLs -o /v167.zip https://github.com/xobs/arduino-compiler/archive/v167.zip && \
+    curl -SLs -o /v167.zip https://github.com/xobs/arduino-compiler/archive/${TAG}.zip && \
     unzip -q -d /opt/codebender /v167.zip && \
     rm -f /v167.zip && \
     mv /opt/codebender/* /opt/codebender/codebender-arduino-core-files && \
