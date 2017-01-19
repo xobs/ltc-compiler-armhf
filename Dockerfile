@@ -1,6 +1,6 @@
 FROM php:7.0.13-fpm-alpine
 
-ENV TAG 1.12
+ENV TAG 1.13
 
 MAINTAINER Sean Cross <xobs@kosagi.com>
 
