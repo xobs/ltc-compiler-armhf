@@ -20,21 +20,22 @@ RUN curl -sSL -o /arduino-1.6.13-linuxarm.tar.xz 'http://arduino.cc/download.php
     mkdir /unpack && \
     tar xvJf /arduino-1.6.13-linuxarm.tar.xz -C /unpack && \
     rm -f /arduino-1.6.13-linuxarm.tar.xz && \
-    true
-
-RUN true && \
     mv /unpack/arduino-1.6.13/arduino-builder /opt/codebender/codebender-arduino-core-files/v167/ && \
     mv /unpack/arduino-1.6.13/tools-builder /opt/codebender/codebender-arduino-core-files/v167/ && \
-    mkdir -p /opt/codebender/codebender-arduino-core-files/v167/hardware/chibitronics && \
-    curl -sSL -o /opt/codebender/codebender-arduino-core-files/v167/hardware/platform.txt https://raw.githubusercontent.com/xobs/arduino-compiler/v167/v167/hardware/platform.txt && \
+    mkdir -p /opt/codebender/codebender-arduino-core-files/v167/hardware/tools/avr && \
+    mkdir -p /opt/codebender/codebender-arduino-core-files/v167/libraries && \
+    rm -rf /unpack && \
     true
 
+# Do this as a separate image, to make pushing updates much faster
 RUN true && \
+    mkdir -p /unpack && \
+    curl -sSL -o /opt/codebender/codebender-arduino-core-files/v167/hardware/platform.txt https://raw.githubusercontent.com/xobs/arduino-compiler/v167/v167/hardware/platform.txt && \
     curl -sSL -o /arduino-esplanade.zip 'https://github.com/xobs/arduino-esplanade/archive/master.zip' && \
     unzip /arduino-esplanade.zip -d /unpack && \
     rm -f /arduino-esplanade.zip && \
-    mv /unpack/arduino-esplanade-master/hardware/* /opt/codebender/codebender-arduino-core-files/v167/hardware/chibitronics && \
-    rm -rf /unpack && \
+    mkdir -p /opt/codebender/codebender-arduino-core-files/v167/hardware/chibitronics && \
+    mv /unpack/arduino-esplanade-master/hardware/* /opt/codebender/codebender-arduino-core-files/v167/hardware/chibitronics/ && \
     true
 
 COPY app.php /
