@@ -1,27 +1,38 @@
-Network
--------
+LtC Compiler
+============
 
-Containers refer to each other using their names.  Be sure to put everything on the same network:
+The compiler is based on a reduced set of the Arduino toolchain with a
+simplified version of the Codebender compiler running on a PHP FastCGI
+module.
 
-    docker network create ltc-network
-
-
-Compiler
---------
-
-The compiler is based on a reduced set of the Arduino toolchain with a simplified version of the Codebender compiler running on a PHP FastCGI module.
+It is API-compatible with Codebender.
 
 Build the compiler container with:
 
-    docker build -t xobs/ltc-compiler:1.11 compiler/
+    docker build \
+          -t xobs/ltc-compiler-armhf:${tag} \
+          .
+
+Make sure you have a network created specifically for ltc, to allow DNS:
+
+    docker network create ltc-net
 
 Run the compiler with the following Docker arguments:
 
-    docker run -d --net=ltc-network --name ltc-compiler xobs/ltc-compiler:1.11
+    docker run \
+          -d \
+          --name=ltc-compiler \
+          --net=ltc-net \
+          xobs/ltc-compiler-armhf:${tag}
 
 To save build files, bind /tmp/cache/filebkp/ to a local path:
 
-    docker run -d --net=ltc-network -v $(pwd)/filebkp:/var/cache/filebkp --name ltc-compiler xobs/ltc-compiler:1.10
+    docker run \
+          -d \
+          -v $(pwd)/filebkp:/var/cache/filebkp \
+          --name=ltc-compiler \
+          --net=ltc-net \
+          xobs/ltc-compiler-armhf:${tag}
 
 The compiler will now be listening on ltc-compiler:9000.
 
